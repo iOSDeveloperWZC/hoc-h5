@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻盈 - 注册</title>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义样式 */
+        :root {
+            --primary-purple: #5B2A86;
+            --primary-blue: #1A759F;
+            --accent-purple: #7F7EFF;
+            --accent-blue: #34D1BF;
+            --accent-pink: #FFAAD6;
+            --accent-orange: #FFB347;
+        }
+        
+        /* 弥散渐变背景 */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+        }
+        
+        /* 磨砂玻璃效果 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* 模拟iPhone 15 Pro尺寸和圆角 */
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 54px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* 输入框样式 */
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            padding: 12px 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 装饰图形 */
+        .shape-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        /* 自定义动画 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* 表单错误提示 */
+        .error-text {
+            color: var(--accent-pink);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* 步骤指示器 */
+        .step-indicator {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .step-progress {
+            height: 100%;
+            background: white;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
+    <!-- iPhone 15 Pro 模拟框架 -->
+    <div class="iphone-frame bg-black">
+        <!-- 状态栏 -->
+        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
+            <div>10:30</div>
+            <div class="flex space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+        
+        <!-- 动态渐变背景 -->
+        <div class="bg-gradient-main h-full w-full relative">
+            <!-- 装饰图形 -->
+            <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20 floating"></div>
+            <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10 floating"></div>
+            
+            <!-- 返回按钮 -->
+            <div class="pt-4 px-6">
+                <a href="onboarding.html" class="text-white flex items-center">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            
+            <!-- 内容区 -->
+            <div class="px-8 py-6">
+                <h1 class="text-3xl font-bold text-white mb-2">创建账号</h1>
+                <p class="text-white text-opacity-80 mb-8">
+                    加入轻盈，开启健康减重之旅
+                </p>
+                
+                <!-- 步骤指示器 -->
+                <div class="step-indicator mb-8">
+                    <div class="step-progress" style="width: 25%;"></div>
+                </div>
+                
+                <!-- 注册表单 -->
+                <form id="registerForm" class="space-y-6">
+                    <!-- 步骤1：基本信息 -->
+                    <div id="step1" class="space-y-4">
+                        <div>
+                            <label for="email" class="block text-white mb-2">电子邮箱</label>
+                            <input type="email" id="email" placeholder="your@email.com" class="input-field" required>
+                        </div>
+                        <div>
+                            <label for="password" class="block text-white mb-2">密码</label>
+                            <div class="relative">
+                                <input type="password" id="password" placeholder="至少8个字符" class="input-field" required>
+                                <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-opacity-60">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="flex space-x-1 mt-2">
+                                <div class="h-1 bg-white bg-opacity-40 rounded flex-1"></div>
+                                <div class="h-1 bg-white bg-opacity-40 rounded flex-1"></div>
+                                <div class="h-1 bg-white bg-opacity-40 rounded flex-1"></div>
+                                <div class="h-1 bg-white bg-opacity-40 rounded flex-1"></div>
+                            </div>
+                            <p class="text-white text-opacity-60 text-xs mt-1">
+                                使用8个以上字符，包含字母和数字
+                            </p>
+                        </div>
+                        <button type="button" id="nextToStep2" class="bg-white w-full py-3 rounded-xl flex justify-center items-center text-primary-purple font-semibold mt-8">
+                            下一步
+                        </button>
+                    </div>
+                    
+                    <!-- 步骤2：个人资料 -->
+                    <div id="step2" class="space-y-4 hidden">
+                        <div>
+                            <label for="nickname" class="block text-white mb-2">昵称</label>
+                            <input type="text" id="nickname" placeholder="你的昵称" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-white mb-2">性别</label>
+                            <div class="flex space-x-4">
+                                <div class="flex-1">
+                                    <input type="radio" id="male" name="gender" value="male" class="hidden">
+                                    <label for="male" class="glassmorphism block py-3 rounded-xl text-center text-white cursor-pointer hover:bg-white hover:bg-opacity-20">
+                                        <i class="fas fa-mars mr-2"></i>男性
+                                    </label>
+                                </div>
+                                <div class="flex-1">
+                                    <input type="radio" id="female" name="gender" value="female" class="hidden">
+                                    <label for="female" class="glassmorphism block py-3 rounded-xl text-center text-white cursor-pointer hover:bg-white hover:bg-opacity-20">
+                                        <i class="fas fa-venus mr-2"></i>女性
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="birthdate" class="block text-white mb-2">出生日期</label>
+                            <input type="date" id="birthdate" class="input-field" required>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button type="button" id="backToStep1" class="glassmorphism flex-1 py-3 rounded-xl flex justify-center items-center text-white">
+                                返回
+                            </button>
+                            <button type="button" id="nextToStep3" class="bg-white flex-1 py-3 rounded-xl flex justify-center items-center text-primary-purple font-semibold">
+                                下一步
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤3：健康信息 -->
+                    <div id="step3" class="space-y-4 hidden">
+                        <div>
+                            <label for="height" class="block text-white mb-2">身高 (cm)</label>
+                            <input type="number" id="height" placeholder="例如：175" class="input-field" required>
+                        </div>
+                        <div>
+                            <label for="weight" class="block text-white mb-2">体重 (kg)</label>
+                            <input type="number" id="weight" placeholder="例如：65" class="input-field" required>
+                        </div>
+                        <div>
+                            <label for="goal" class="block text-white mb-2">目标</label>
+                            <select id="goal" class="input-field" required>
+                                <option value="" disabled selected>选择你的目标</option>
+                                <option value="weight_loss">减重</option>
+                                <option value="maintain">保持体重</option>
+                                <option value="healthy_habits">培养健康习惯</option>
+                                <option value="fitness">提高健康水平</option>
+                            </select>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button type="button" id="backToStep2" class="glassmorphism flex-1 py-3 rounded-xl flex justify-center items-center text-white">
+                                返回
+                            </button>
+                            <button type="button" id="nextToStep4" class="bg-white flex-1 py-3 rounded-xl flex justify-center items-center text-primary-purple font-semibold">
+                                下一步
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤4：生活习惯 -->
+                    <div id="step4" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-white mb-2">活动水平</label>
+                            <div class="space-y-2">
+                                <div class="glassmorphism p-3 rounded-xl">
+                                    <input type="radio" id="activity1" name="activity" value="sedentary" class="hidden">
+                                    <label for="activity1" class="flex items-center text-white cursor-pointer">
+                                        <span class="w-4 h-4 rounded-full border border-white inline-block mr-3"></span>
+                                        <div>
+                                            <p class="font-medium">基本静态</p>
+                                            <p class="text-sm text-white text-opacity-70">很少或没有日常锻炼</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="glassmorphism p-3 rounded-xl">
+                                    <input type="radio" id="activity2" name="activity" value="light" class="hidden">
+                                    <label for="activity2" class="flex items-center text-white cursor-pointer">
+                                        <span class="w-4 h-4 rounded-full border border-white inline-block mr-3"></span>
+                                        <div>
+                                            <p class="font-medium">轻度活动</p>
+                                            <p class="text-sm text-white text-opacity-70">每周锻炼1-3次</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="glassmorphism p-3 rounded-xl">
+                                    <input type="radio" id="activity3" name="activity" value="moderate" class="hidden">
+                                    <label for="activity3" class="flex items-center text-white cursor-pointer">
+                                        <span class="w-4 h-4 rounded-full border border-white inline-block mr-3"></span>
+                                        <div>
+                                            <p class="font-medium">中度活动</p>
+                                            <p class="text-sm text-white text-opacity-70">每周锻炼3-5次</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="glassmorphism p-3 rounded-xl">
+                                    <input type="radio" id="activity4" name="activity" value="active" class="hidden">
+                                    <label for="activity4" class="flex items-center text-white cursor-pointer">
+                                        <span class="w-4 h-4 rounded-full border border-white inline-block mr-3"></span>
+                                        <div>
+                                            <p class="font-medium">活跃</p>
+                                            <p class="text-sm text-white text-opacity-70">每周锻炼6-7次</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button type="button" id="backToStep3" class="glassmorphism flex-1 py-3 rounded-xl flex justify-center items-center text-white">
+                                返回
+                            </button>
+                            <button type="button" id="completeRegistration" class="bg-white flex-1 py-3 rounded-xl flex justify-center items-center text-primary-purple font-semibold">
+                                完成注册
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- 底部说明 -->
+                <div class="mt-8 text-center">
+                    <p class="text-white text-opacity-60 text-xs">
+                        注册即代表您同意我们的<a href="#" class="underline">服务条款</a>和<a href="#" class="underline">隐私政策</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取表单和步骤元素
+            const form = document.getElementById('registerForm');
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const step4 = document.getElementById('step4');
+            const progressBar = document.querySelector('.step-progress');
+            
+            // 步骤导航按钮
+            const nextToStep2Btn = document.getElementById('nextToStep2');
+            const backToStep1Btn = document.getElementById('backToStep1');
+            const nextToStep3Btn = document.getElementById('nextToStep3');
+            const backToStep2Btn = document.getElementById('backToStep2');
+            const nextToStep4Btn = document.getElementById('nextToStep4');
+            const backToStep3Btn = document.getElementById('backToStep3');
+            
+            // 切换到第二步
+            nextToStep2Btn.addEventListener('click', function() {
+                step1.classList.add('hidden');
+                step2.classList.remove('hidden');
+                progressBar.style.width = '50%';
+            });
+            
+            // 返回第一步
+            backToStep1Btn.addEventListener('click', function() {
+                step2.classList.add('hidden');
+                step1.classList.remove('hidden');
+                progressBar.style.width = '25%';
+            });
+            
+            // 切换到第三步
+            nextToStep3Btn.addEventListener('click', function() {
+                step2.classList.add('hidden');
+                step3.classList.remove('hidden');
+                progressBar.style.width = '75%';
+            });
+            
+            // 返回第二步
+            backToStep2Btn.addEventListener('click', function() {
+                step3.classList.add('hidden');
+                step2.classList.remove('hidden');
+                progressBar.style.width = '50%';
+            });
+            
+            // 切换到第四步
+            nextToStep4Btn.addEventListener('click', function() {
+                step3.classList.add('hidden');
+                step4.classList.remove('hidden');
+                progressBar.style.width = '100%';
+            });
+            
+            // 返回第三步
+            backToStep3Btn.addEventListener('click', function() {
+                step4.classList.add('hidden');
+                step3.classList.remove('hidden');
+                progressBar.style.width = '75%';
+            });
+            
+            // 完成注册按钮点击事件
+            const completeRegistrationBtn = document.getElementById('completeRegistration');
+            completeRegistrationBtn.addEventListener('click', function() {
+                // 直接跳转到主页
+                window.location.href = 'home.html';
+            });
+            
+            // 性别选择按钮交互
+            const maleLabel = document.querySelector('label[for="male"]');
+            const femaleLabel = document.querySelector('label[for="female"]');
+            const maleInput = document.getElementById('male');
+            const femaleInput = document.getElementById('female');
+            
+            maleLabel.addEventListener('click', function() {
+                maleInput.checked = true;
+                maleLabel.classList.add('bg-white', 'bg-opacity-20');
+                femaleLabel.classList.remove('bg-white', 'bg-opacity-20');
+            });
+            
+            femaleLabel.addEventListener('click', function() {
+                femaleInput.checked = true;
+                femaleLabel.classList.add('bg-white', 'bg-opacity-20');
+                maleLabel.classList.remove('bg-white', 'bg-opacity-20');
+            });
+            
+            // 活动水平选项交互
+            const activityOptions = document.querySelectorAll('input[name="activity"]');
+            activityOptions.forEach(option => {
+                const label = option.nextElementSibling;
+                const radioCircle = label.querySelector('span');
+                
+                label.addEventListener('click', function() {
+                    // 重置所有选项
+                    activityOptions.forEach(opt => {
+                        const lbl = opt.nextElementSibling;
+                        const circle = lbl.querySelector('span');
+                        circle.classList.remove('bg-white');
+                    });
+                    
+                    // 设置当前选中项
+                    option.checked = true;
+                    radioCircle.classList.add('bg-white');
+                });
+            });
+            
+            // 表单提交处理
+            form.addEventListener('submit', function(e) {
+                // 取消阻止默认行为，允许表单正常提交
+                // e.preventDefault();
+                
+                // 这里可以添加表单验证和数据处理逻辑
+                
+                // 直接跳转到主页
+                window.location.href = 'home.html';
+                
+                // 确保跳转成功的备选方案
+                setTimeout(function() {
+                    window.location.replace('home.html');
+                }, 100);
+                
+                return true; // 允许表单继续提交
+            });
+        });
+    </script>
+</body>
+</html> 

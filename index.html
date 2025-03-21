@@ -1,2 +1,527 @@
-<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>iOS内测服务</title><script>var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'))
-            document.write('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' + (coverSupport ? ', viewport-fit=cover' : '') + '" />')</script><link rel=stylesheet href=/hoc-h5/static/index.97465e7b.css></head><body><noscript><strong>Please enable JavaScript to continue.</strong></noscript><div id=app></div><script src=/hoc-h5/static/js/chunk-vendors.f7701713.js></script><script src=/hoc-h5/static/js/index.b817341f.js></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻盈 - 首页</title>
+    <script>
+        // 自动跳转到splash页面
+        window.location.href = 'splash.html';
+    </script>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义样式 */
+        :root {
+            --primary-purple: #5B2A86;
+            --primary-blue: #1A759F;
+            --accent-purple: #7F7EFF;
+            --accent-blue: #34D1BF;
+            --accent-pink: #FFAAD6;
+            --accent-orange: #FFB347;
+        }
+        
+        /* 弥散渐变背景 */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+        }
+        
+        /* 磨砂玻璃效果 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* 模拟iPhone 15 Pro尺寸和圆角 */
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 54px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* 动态波浪效果 */
+        .wave-animation {
+            animation: wave 2s infinite ease-in-out;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* 呼吸动画效果 */
+        .breathing-animation {
+            animation: breathing 3s infinite ease-in-out;
+        }
+        
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 自定义滚动条 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        
+        /* 轻断食时钟样式 */
+        .fasting-clock {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--accent-blue) 0% 30%,
+                rgba(255, 255, 255, 0.2) 30% 100%
+            );
+        }
+        
+        .fasting-clock::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* 导航栏活跃状态 */
+        .nav-active {
+            color: white;
+            position: relative;
+        }
+        
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
+    <!-- iPhone 15 Pro 模拟框架 -->
+    <div class="iphone-frame bg-black">
+        <!-- 状态栏 -->
+        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
+            <div>10:30</div>
+            <div class="flex space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+        
+        <!-- 动态渐变背景 -->
+        <div class="bg-gradient-main h-full w-full overflow-hidden relative">
+            <!-- 顶部欢迎语 -->
+            <div class="pt-10 px-6">
+                <h1 class="text-white text-2xl font-bold">早上好，王小明</h1>
+                <p class="text-white text-opacity-80 text-sm">今天是坚持轻断食的第7天</p>
+            </div>
+            
+            <!-- 主要内容区域，带滚动 -->
+            <div class="px-6 py-4 h-[740px] overflow-y-auto custom-scrollbar">
+                <!-- 健康状态卡片 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">健康状态</h2>
+                        <i class="fas fa-ellipsis-h text-white"></i>
+                    </div>
+                    
+                    <!-- 体重变化 -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white text-opacity-70 text-sm">当前体重</p>
+                            <div class="flex items-baseline">
+                                <span class="text-white text-4xl font-bold breathing-animation">72.5</span>
+                                <span class="text-white ml-1">kg</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-arrow-down text-green-400 text-xs mr-1"></i>
+                                <span class="text-green-400 text-xs">减少了0.8kg</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 体重曲线图表 -->
+                        <div class="w-36 h-16 bg-opacity-20 bg-white rounded-lg overflow-hidden flex items-end">
+                            <div class="h-1/3 w-3 bg-white bg-opacity-30 mx-0.5"></div>
+                            <div class="h-1/2 w-3 bg-white bg-opacity-30 mx-0.5"></div>
+                            <div class="h-2/5 w-3 bg-white bg-opacity-30 mx-0.5"></div>
+                            <div class="h-3/5 w-3 bg-white bg-opacity-30 mx-0.5"></div>
+                            <div class="h-2/5 w-3 bg-white bg-opacity-30 mx-0.5"></div>
+                            <div class="h-2/3 w-3 bg-white bg-opacity-90 mx-0.5"></div>
+                            <div class="h-3/4 w-3 bg-white mx-0.5"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 环形进度 -->
+                    <div class="flex justify-between items-center mt-4">
+                        <!-- BMI指数 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full border-4 border-opacity-20 border-white flex items-center justify-center mb-1 relative">
+                                <div class="absolute inset-0 rounded-full border-4 border-green-400 border-t-transparent border-r-transparent" style="transform: rotate(45deg);"></div>
+                                <span class="text-white text-sm font-semibold">23.6</span>
+                            </div>
+                            <span class="text-white text-opacity-70 text-xs">BMI</span>
+                        </div>
+                        
+                        <!-- 体脂率 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full border-4 border-opacity-20 border-white flex items-center justify-center mb-1 relative">
+                                <div class="absolute inset-0 rounded-full border-4 border-yellow-400 border-t-transparent" style="transform: rotate(270deg);"></div>
+                                <span class="text-white text-sm font-semibold">18%</span>
+                            </div>
+                            <span class="text-white text-opacity-70 text-xs">体脂率</span>
+                        </div>
+                        
+                        <!-- 计划进度 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full border-4 border-opacity-20 border-white flex items-center justify-center mb-1 relative">
+                                <div class="absolute inset-0 rounded-full border-4 border-accent-blue border-r-transparent" style="transform: rotate(135deg);"></div>
+                                <span class="text-white text-sm font-semibold">70%</span>
+                            </div>
+                            <span class="text-white text-opacity-70 text-xs">计划</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 今日计划卡片 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">今日计划</h2>
+                        <button class="text-xs px-3 py-1 rounded-full bg-accent-blue text-white">
+                            调整
+                        </button>
+                    </div>
+                    
+                    <!-- 轻断食时钟 -->
+                    <div class="flex justify-center my-4">
+                        <div class="fasting-clock flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-white text-3xl font-bold">06:45</div>
+                                <div class="text-white text-opacity-70 text-xs">剩余断食时间</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间窗口信息 -->
+                    <div class="flex justify-between items-center bg-white bg-opacity-10 rounded-xl p-3 mb-3">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-accent-blue flex items-center justify-center mr-3">
+                                <i class="fas fa-utensils text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-white text-sm font-medium">进食窗口</p>
+                                <p class="text-white text-opacity-70 text-xs">13:00 - 21:00</p>
+                            </div>
+                        </div>
+                        <div class="px-3 py-1 rounded-full bg-white bg-opacity-20">
+                            <span class="text-white text-xs">8小时</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center bg-white bg-opacity-10 rounded-xl p-3">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center mr-3">
+                                <i class="fas fa-moon text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-white text-sm font-medium">断食窗口</p>
+                                <p class="text-white text-opacity-70 text-xs">21:00 - 13:00</p>
+                            </div>
+                        </div>
+                        <div class="px-3 py-1 rounded-full bg-white bg-opacity-20">
+                            <span class="text-white text-xs">16小时</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 饮食建议卡片 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">今日饮食建议</h2>
+                        <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- 饮食建议项目 -->
+                        <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center mr-2">
+                                    <i class="fas fa-seedling text-white"></i>
+                                </div>
+                                <span class="text-white text-sm">蔬菜沙拉</span>
+                            </div>
+                            <p class="text-white text-opacity-70 text-xs">富含纤维素，低碳水</p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-red-400 flex items-center justify-center mr-2">
+                                    <i class="fas fa-drumstick-bite text-white"></i>
+                                </div>
+                                <span class="text-white text-sm">瘦肉蛋白</span>
+                            </div>
+                            <p class="text-white text-opacity-70 text-xs">增加饱腹感，促进代谢</p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-400 flex items-center justify-center mr-2">
+                                    <i class="fas fa-glass-water text-white"></i>
+                                </div>
+                                <span class="text-white text-sm">多喝水</span>
+                            </div>
+                            <p class="text-white text-opacity-70 text-xs">每天至少2000ml</p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center mr-2">
+                                    <i class="fas fa-apple-alt text-white"></i>
+                                </div>
+                                <span class="text-white text-sm">少量水果</span>
+                            </div>
+                            <p class="text-white text-opacity-70 text-xs">控制在200g以内</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI助手入口 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5 relative overflow-hidden">
+                    <div class="absolute -right-5 -bottom-5 w-24 h-24 bg-accent-purple rounded-full opacity-30"></div>
+                    
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-white text-lg font-semibold">AI助手</h2>
+                        <button class="text-xs px-3 py-1 rounded-full bg-accent-purple text-white">
+                            问一问
+                        </button>
+                    </div>
+                    
+                    <p class="text-white text-opacity-70 text-sm mb-3">有任何饮食、健康问题随时问我</p>
+                    
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3">
+                            <i class="fas fa-robot text-purple-600"></i>
+                        </div>
+                        <div class="bg-white bg-opacity-10 rounded-full py-2 px-4 w-64">
+                            <p class="text-white text-sm">断食期间可以喝咖啡吗？</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部导航栏 -->
+            <div class="glassmorphism w-full absolute bottom-0 left-0 py-4 px-4">
+                <div class="flex justify-around">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-home text-xl nav-active"></i>
+                        <span class="text-xs text-white mt-1">首页</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-chart-line text-xl text-white text-opacity-70"></i>
+                        <span class="text-xs text-white text-opacity-70 mt-1">数据</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center -mt-6">
+                            <i class="fas fa-plus text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-comments text-xl text-white text-opacity-70"></i>
+                        <span class="text-xs text-white text-opacity-70 mt-1">社区</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-user text-xl text-white text-opacity-70"></i>
+                        <span class="text-xs text-white text-opacity-70 mt-1">我的</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const loginButton = document.getElementById('loginButton');
+            
+            // 社交登录按钮点击效果
+            const socialButtons = document.querySelectorAll('.fab');
+            socialButtons.forEach(button => {
+                button.parentElement.addEventListener('click', function() {
+                    // 获取按钮的社交媒体类型
+                    const socialType = button.classList[1].replace('fa-', '');
+                    
+                    // 显示提示信息
+                    showToast(`正在使用${socialType}登录`);
+                    
+                    // 添加点击效果
+                    this.classList.add('bg-opacity-30');
+                    setTimeout(() => {
+                        this.classList.remove('bg-opacity-30');
+                    }, 150);
+                });
+            });
+            
+            // 检查邮箱/手机号是否有效
+            function validateEmail(email) {
+                // 简单的邮箱验证正则表达式
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                // 简单的中国手机号验证正则表达式
+                const phoneRegex = /^1[3-9]\d{9}$/;
+                
+                return emailRegex.test(email) || phoneRegex.test(email);
+            }
+            
+            // 检查密码是否有效
+            function validatePassword(password) {
+                return password.length >= 6;
+            }
+            
+            // 表单验证
+            function validateForm() {
+                let isValid = true;
+                
+                // 验证邮箱/手机号
+                if (!validateEmail(emailInput.value)) {
+                    emailError.classList.remove('hidden');
+                    emailInput.classList.add('border-red-400');
+                    isValid = false;
+                } else {
+                    emailError.classList.add('hidden');
+                    emailInput.classList.remove('border-red-400');
+                }
+                
+                // 验证密码
+                if (!validatePassword(passwordInput.value)) {
+                    passwordError.classList.remove('hidden');
+                    passwordInput.classList.add('border-red-400');
+                    isValid = false;
+                } else {
+                    passwordError.classList.add('hidden');
+                    passwordInput.classList.remove('border-red-400');
+                }
+                
+                return isValid;
+            }
+            
+            // 邮箱输入框失去焦点时验证
+            emailInput.addEventListener('blur', function() {
+                if (this.value && !validateEmail(this.value)) {
+                    emailError.classList.remove('hidden');
+                    this.classList.add('border-red-400');
+                } else {
+                    emailError.classList.add('hidden');
+                    this.classList.remove('border-red-400');
+                }
+            });
+            
+            // 密码输入框失去焦点时验证
+            passwordInput.addEventListener('blur', function() {
+                if (this.value && !validatePassword(this.value)) {
+                    passwordError.classList.remove('hidden');
+                    this.classList.add('border-red-400');
+                } else {
+                    passwordError.classList.add('hidden');
+                    this.classList.remove('border-red-400');
+                }
+            });
+            
+            // 提交表单
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // 表单验证通过
+                    loginButton.disabled = true;
+                    loginButton.textContent = '登录中...';
+                    
+                    // 模拟登录过程
+                    setTimeout(() => {
+                        showToast('登录成功');
+                        
+                        // 跳转到首页
+                        setTimeout(() => {
+                            window.location.href = 'home.html';
+                        }, 1000);
+                    }, 1500);
+                } else {
+                    // 表单验证失败
+                    showToast('请检查您的输入');
+                }
+            });
+            
+            // 显示提示信息
+            function showToast(message) {
+                // 检查是否已有toast存在
+                let toast = document.querySelector('.toast-message');
+                if (toast) {
+                    toast.remove();
+                }
+                
+                // 创建新的toast
+                toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.style.position = 'absolute';
+                toast.style.bottom = '100px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = 'rgba(0, 0, 0, 0.7)';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '20px';
+                toast.style.zIndex = '100';
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                toast.textContent = message;
+                
+                document.querySelector('.iphone-frame').appendChild(toast);
+                
+                // 显示toast
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                }, 10);
+                
+                // 隐藏toast
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html> 

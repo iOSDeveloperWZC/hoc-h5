@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻盈 - 启动页</title>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义样式 */
+        :root {
+            --primary-purple: #5B2A86;
+            --primary-blue: #1A759F;
+            --accent-purple: #7F7EFF;
+            --accent-blue: #34D1BF;
+            --accent-pink: #FFAAD6;
+            --accent-orange: #FFB347;
+        }
+        
+        /* 弥散渐变背景 */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+        }
+        
+        /* 模拟iPhone 15 Pro尺寸和圆角 */
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 54px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* 呼吸动画效果 */
+        .breathing-animation {
+            animation: breathing 3s infinite ease-in-out;
+        }
+        
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        /* 底部波浪动画 */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fill="rgba(255, 255, 255, 0.1)" /></svg>');
+            background-size: 100% 100%;
+            animation: wave-animation 10s linear infinite;
+        }
+        
+        .wave-2 {
+            bottom: -25px;
+            opacity: 0.5;
+            animation: wave-animation 8s linear infinite;
+        }
+        
+        @keyframes wave-animation {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+        
+        /* 渐入动画 */
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
+    <!-- iPhone 15 Pro 模拟框架 -->
+    <div class="iphone-frame bg-black">
+        <!-- 状态栏 -->
+        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
+            <div>10:30</div>
+            <div class="flex space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+        
+        <!-- 动态渐变背景 -->
+        <div class="bg-gradient-main h-full w-full flex flex-col justify-center items-center relative">
+            <!-- Logo 与标语 -->
+            <div class="flex flex-col items-center">
+                <!-- Logo 设计 -->
+                <div class="w-40 h-40 rounded-full bg-white bg-opacity-10 flex items-center justify-center mb-8 breathing-animation">
+                    <div class="text-center">
+                        <div class="text-white text-5xl font-bold tracking-wider">轻盈</div>
+                        <div class="text-white text-opacity-60 text-lg mt-1">LightFast</div>
+                    </div>
+                </div>
+                
+                <!-- 羽毛图标动效 -->
+                <div class="absolute">
+                    <i class="fas fa-feather text-white text-opacity-30 text-6xl transform -rotate-12 -translate-x-16 translate-y-8 breathing-animation"></i>
+                    <i class="fas fa-feather text-white text-opacity-20 text-5xl transform rotate-45 translate-x-20 -translate-y-10 breathing-animation"></i>
+                </div>
+                
+                <!-- 品牌标语 -->
+                <div class="mt-16 text-center fade-in">
+                    <p class="text-white text-xl font-light tracking-wider">科学轻断食，健康轻松瘦</p>
+                </div>
+            </div>
+            
+            <!-- 底部信息 -->
+            <div class="absolute bottom-10 w-full text-center text-white text-opacity-60 text-xs fade-in">
+                <p>© 2023 轻盈 All Rights Reserved</p>
+            </div>
+            
+            <!-- 底部波浪装饰 -->
+            <div class="wave"></div>
+            <div class="wave wave-2"></div>
+            
+            <!-- 点击进入提示 -->
+            <div class="absolute bottom-24 w-full text-center">
+                <a href="onboarding.html" class="inline-block">
+                    <p class="text-white text-sm mb-2">点击进入</p>
+                    <i class="fas fa-chevron-down text-white text-opacity-80 animate-bounce"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 自动跳转脚本 -->
+    <script>
+        // 3秒后自动跳转到引导页
+        setTimeout(function(){
+            window.location.href = 'onboarding.html';
+        }, 3000);
+    </script>
+</body>
+</html> 

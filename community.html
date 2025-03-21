@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻盈 - 社区</title>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义样式 */
+        :root {
+            --primary-purple: #5B2A86;
+            --primary-blue: #1A759F;
+            --accent-purple: #7F7EFF;
+            --accent-blue: #34D1BF;
+            --accent-pink: #FFAAD6;
+            --accent-orange: #FFB347;
+        }
+        
+        /* 弥散渐变背景 */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+        }
+        
+        /* 磨砂玻璃效果 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* 模拟iPhone 15 Pro尺寸和圆角 */
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 54px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* iPhone刘海和动态岛样式 */
+        .iphone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 35px;
+            background-color: #000;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 30;
+        }
+        
+        /* 状态栏调整为透明 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 30px 0px 30px;
+            position: relative;
+            z-index: 20;
+            height: 44px;
+            background: transparent;
+        }
+        
+        /* 装饰图形 */
+        .shape-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 50;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: white;
+        }
+        
+        .nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+        
+        /* 社区帖子卡片 */
+        .post-card {
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        /* 用户头像 */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        /* 动态内容最大高度 */
+        .post-content {
+            max-height: 120px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .content-fade {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+        }
+        
+        /* 互动按钮样式 */
+        .interaction-btn {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 6px 10px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .interaction-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        /* 内容区域需要留出底部导航的空间 */
+        .content-area {
+            padding-bottom: 80px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 h-screen overflow-hidden">
+    <!-- iPhone 15 Pro 模拟框架 -->
+    <div class="iphone-frame bg-black">
+        <!-- 刘海/动态岛 -->
+        <div class="iphone-notch"></div>
+        
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="text-white text-xs">10:30</div>
+            <div class="flex space-x-1">
+                <i class="fas fa-signal text-white text-xs"></i>
+                <i class="fas fa-wifi text-white text-xs"></i>
+                <i class="fas fa-battery-three-quarters text-white text-xs"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="bg-gradient-main h-full w-full relative overflow-auto" style="padding-bottom: 80px;">
+            <!-- 装饰图形 -->
+            <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20"></div>
+            <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10"></div>
+            
+            <!-- 顶部导航 -->
+            <div class="px-6 pt-6 pb-3 sticky top-0 z-10 bg-gradient-main">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-white">社区</h1>
+                    <div class="flex space-x-3">
+                        <button class="text-white text-opacity-80">
+                            <i class="fas fa-search text-xl"></i>
+                        </button>
+                        <button class="text-white text-opacity-80">
+                            <i class="fas fa-bell text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- 分类标签 -->
+                <div class="flex space-x-3 mt-4 overflow-x-auto pb-2">
+                    <button class="category-tag px-4 py-1.5 bg-white rounded-full text-sm font-medium text-primary-purple active">
+                        全部
+                    </button>
+                    <button class="category-tag px-4 py-1.5 glassmorphism rounded-full text-sm font-medium text-white">
+                        经验分享
+                    </button>
+                    <button class="category-tag px-4 py-1.5 glassmorphism rounded-full text-sm font-medium text-white">
+                        饮食技巧
+                    </button>
+                    <button class="category-tag px-4 py-1.5 glassmorphism rounded-full text-sm font-medium text-white">
+                        健康记录
+                    </button>
+                    <button class="category-tag px-4 py-1.5 glassmorphism rounded-full text-sm font-medium text-white">
+                        求助问题
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 主要内容区 -->
+            <div class="content-area px-4">
+                <!-- 社区帖子 -->
+                <div class="post-card glassmorphism p-4">
+                    <!-- 用户信息 -->
+                    <div class="flex items-center mb-3">
+                        <div class="user-avatar bg-accent-purple mr-3 flex items-center justify-center">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">轻盈达人</p>
+                            <p class="text-white text-opacity-60 text-xs">3小时前</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button class="text-white text-opacity-60">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子内容 -->
+                    <div class="mb-3">
+                        <p class="text-white mb-2 font-medium">我的断食12周经验分享！</p>
+                        <div class="post-content text-white text-opacity-80 text-sm">
+                            坚持轻断食12周了，想和大家分享一下我的心得体会。开始的一周很难适应，总是感觉饥饿，但慢慢地身体适应了这种饮食模式。现在我习惯了16:8的断食模式，每天只在12点到20点之间进食。
+                            
+                            效果方面，我总共减掉了6.5kg，最重要的是感觉精力更充沛了，不再有午饭后的疲倦感。皮肤状态也比以前好了很多。
+                            
+                            有几点经验想分享：
+                            1. 断食初期可以从12:12开始，慢慢延长断食时间
+                            2. 喝足够的水很重要，有时候你以为是饿，其实是渴了
+                            3. 黑咖啡和绿茶可以帮助控制饥饿感
+                            4. 进食窗口期不要暴饮暴食，保持健康饮食很重要
+                            
+                            有同样经历的小伙伴吗？欢迎交流！
+                            <div class="content-fade"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子图片 -->
+                    <div class="rounded-xl overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80" alt="健康餐食" class="w-full h-40 object-cover">
+                    </div>
+                    
+                    <!-- 互动按钮 -->
+                    <div class="flex justify-between mt-2">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart mr-1"></i>
+                            <span>128</span>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment mr-1"></i>
+                            <span>36</span>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square mr-1"></i>
+                            <span>分享</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 第二个帖子 -->
+                <div class="post-card glassmorphism p-4">
+                    <!-- 用户信息 -->
+                    <div class="flex items-center mb-3">
+                        <div class="user-avatar bg-accent-blue mr-3 flex items-center justify-center">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">健康小厨</p>
+                            <p class="text-white text-opacity-60 text-xs">昨天 15:30</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button class="text-white text-opacity-60">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子内容 -->
+                    <div class="mb-3">
+                        <p class="text-white mb-2 font-medium">断食期间的营养补充餐食谱</p>
+                        <div class="post-content text-white text-opacity-80 text-sm">
+                            断食不等于不注重营养！在进食窗口期，摄入均衡的营养非常重要。分享一个我常用的高蛋白低碳水餐食谱：
+                            
+                            材料:
+                            - 鸡胸肉 150g
+                            - 各色蔬菜 250g (西兰花、胡萝卜、彩椒)
+                            - 藜麦 50g
+                            - 牛油果 1/2个
+                            - 橄榄油、盐、胡椒、柠檬汁调味
+                            
+                            做法简单：鸡胸肉切条，用橄榄油煎熟，蔬菜汆烫，藜麦煮熟，牛油果切片，最后将所有食材混合，加入调味料即可。
+                            
+                            这道餐食富含蛋白质、健康脂肪和复合碳水，能够提供持久的饱腹感和必要的营养。
+                            <div class="content-fade"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子图片 -->
+                    <div class="rounded-xl overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80" alt="健康餐食" class="w-full h-40 object-cover">
+                    </div>
+                    
+                    <!-- 互动按钮 -->
+                    <div class="flex justify-between mt-2">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart mr-1"></i>
+                            <span>86</span>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment mr-1"></i>
+                            <span>24</span>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square mr-1"></i>
+                            <span>分享</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 第三个帖子 -->
+                <div class="post-card glassmorphism p-4">
+                    <!-- 用户信息 -->
+                    <div class="flex items-center mb-3">
+                        <div class="user-avatar bg-accent-pink mr-3 flex items-center justify-center">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">初学者小明</p>
+                            <p class="text-white text-opacity-60 text-xs">2天前</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button class="text-white text-opacity-60">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子内容 -->
+                    <div class="mb-3">
+                        <p class="text-white mb-2 font-medium">新手求助：断食期间头晕怎么办？</p>
+                        <div class="post-content text-white text-opacity-80 text-sm">
+                            刚开始尝试16:8断食，现在是第三天，早上起床后感觉有点头晕目眩，不知道这是正常现象还是我哪里做错了？
+                            
+                            我的作息时间是晚上8点到第二天中午12点断食，饮食上主要是减少了碳水化合物的摄入。平时喝水量可能不太够，是不是这个原因导致的呢？
+                            
+                            有经验的朋友能给点建议吗？要不要继续坚持，还是调整一下方案？谢谢！
+                            <div class="content-fade"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 互动按钮 -->
+                    <div class="flex justify-between mt-2">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart mr-1"></i>
+                            <span>15</span>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment mr-1"></i>
+                            <span>42</span>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square mr-1"></i>
+                            <span>分享</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 浮动发帖按钮 -->
+                <div class="absolute bottom-24 right-6 z-20">
+                    <button id="newPostBtn" class="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-primary-purple">
+                        <i class="fas fa-plus text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+           
+        </div>
+         <!-- 底部导航栏 -->
+         <div class="bottom-nav">
+            <div class="flex justify-around">
+                <a href="home.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="ai.html" class="nav-item">
+                    <i class="fas fa-robot"></i>
+                    <span>AI助手</span>
+                </a>
+                <a href="data.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>数据</span>
+                </a>
+                <a href="community.html" class="nav-item active">
+                    <i class="fas fa-users"></i>
+                    <span>社区</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>我的</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 分类标签交互
+            const categoryTags = document.querySelectorAll('.category-tag');
+            categoryTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // 移除所有标签的激活状态
+                    categoryTags.forEach(t => {
+                        t.classList.remove('active', 'bg-white', 'text-primary-purple');
+                        t.classList.add('glassmorphism', 'text-white');
+                    });
+                    
+                    // 激活当前点击的标签
+                    this.classList.remove('glassmorphism', 'text-white');
+                    this.classList.add('active', 'bg-white', 'text-primary-purple');
+                    
+                    // 显示切换分类的提示
+                    showToast(`已切换到"${this.textContent.trim()}"分类`);
+                    
+                    // 在实际应用中，这里应该有筛选帖子内容的逻辑
+                });
+            });
+            
+            // 发帖按钮点击效果
+            const newPostBtn = document.getElementById('newPostBtn');
+            newPostBtn.addEventListener('click', function() {
+                showToast('创建新帖子');
+                // 这里可以添加弹出发帖表单或跳转到发帖页面的代码
+                newPostBtn.classList.add('scale-90');
+                setTimeout(() => {
+                    newPostBtn.classList.remove('scale-90');
+                }, 150);
+            });
+            
+            // 帖子互动按钮效果
+            const interactionBtns = document.querySelectorAll('.interaction-btn');
+            interactionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 点赞效果
+                    if (btn.querySelector('.fa-heart')) {
+                        const icon = btn.querySelector('.fa-heart');
+                        if (icon.classList.contains('far')) {
+                            icon.classList.remove('far');
+                            icon.classList.add('fas');
+                            icon.classList.add('text-accent-pink');
+                            
+                            const countSpan = btn.querySelector('span');
+                            let count = parseInt(countSpan.textContent);
+                            countSpan.textContent = count + 1;
+                            
+                            showToast('已点赞');
+                        } else {
+                            icon.classList.remove('fas');
+                            icon.classList.remove('text-accent-pink');
+                            icon.classList.add('far');
+                            
+                            const countSpan = btn.querySelector('span');
+                            let count = parseInt(countSpan.textContent);
+                            countSpan.textContent = count - 1;
+                            
+                            showToast('已取消点赞');
+                        }
+                    }
+                    
+                    // 评论效果
+                    if (btn.querySelector('.fa-comment')) {
+                        showToast('打开评论区');
+                        // 这里可以添加弹出评论区的代码
+                    }
+                    
+                    // 分享效果
+                    if (btn.querySelector('.fa-share-square')) {
+                        showToast('分享到...');
+                        // 这里可以添加分享选项的代码
+                    }
+                });
+            });
+            
+            // 导航交互
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // 我们不阻止默认行为，允许页面跳转
+                    navItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    item.classList.add('active');
+                });
+            });
+            
+            // 添加帖子内容点击展开功能
+            const postContents = document.querySelectorAll('.post-content');
+            postContents.forEach(content => {
+                content.addEventListener('click', function() {
+                    if (this.style.maxHeight === 'none') {
+                        this.style.maxHeight = '120px';
+                        this.querySelector('.content-fade').style.display = 'block';
+                    } else {
+                        this.style.maxHeight = 'none';
+                        this.querySelector('.content-fade').style.display = 'none';
+                    }
+                });
+            });
+            
+            // 显示提示信息
+            function showToast(message) {
+                // 检查是否已有toast存在
+                let toast = document.querySelector('.toast-message');
+                if (toast) {
+                    toast.remove();
+                }
+                
+                // 创建新的toast
+                toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.style.position = 'absolute';
+                toast.style.bottom = '100px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = 'rgba(0, 0, 0, 0.7)';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '20px';
+                toast.style.zIndex = '100';
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                toast.textContent = message;
+                
+                document.querySelector('.iphone-frame').appendChild(toast);
+                
+                // 显示toast
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                }, 10);
+                
+                // 隐藏toast
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html> 

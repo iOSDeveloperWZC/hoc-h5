@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻盈 - 数据记录</title>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义样式 */
+        :root {
+            --primary-purple: #5B2A86;
+            --primary-blue: #1A759F;
+            --accent-purple: #7F7EFF;
+            --accent-blue: #34D1BF;
+            --accent-pink: #FFAAD6;
+            --accent-orange: #FFB347;
+        }
+        
+        /* 弥散渐变背景 */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+        }
+        
+        /* 磨砂玻璃效果 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* 模拟iPhone 15 Pro尺寸和圆角 */
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 54px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* 呼吸动画效果 */
+        .breathing-animation {
+            animation: breathing 3s infinite ease-in-out;
+        }
+        
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 数字滚动动画 */
+        .number-roll {
+            animation: numberRoll 0.5s ease-out;
+        }
+        
+        @keyframes numberRoll {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* 自定义滚动条 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        
+        /* 图表线条动画 */
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 2s ease-in-out forwards;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        /* 导航栏活跃状态 */
+        .nav-active {
+            color: white;
+            position: relative;
+        }
+        
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
+    <!-- iPhone 15 Pro 模拟框架 -->
+    <div class="iphone-frame bg-black">
+        <!-- 状态栏 -->
+        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
+            <div>10:30</div>
+            <div class="flex space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+        
+        <!-- 动态渐变背景 -->
+        <div class="bg-gradient-main h-full w-full overflow-hidden relative">
+            <!-- 顶部标题 -->
+            <div class="pt-6 px-6">
+                <div class="flex items-center mb-2">
+                    <a href="data.html" class="mr-3 text-white">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                    <h1 class="text-white text-2xl font-bold">数据记录</h1>
+                </div>
+                <p class="text-white text-opacity-80 text-sm">追踪您的健康进度</p>
+            </div>
+            
+            <!-- 分段控制器 -->
+            <div class="px-6 py-4">
+                <div class="glassmorphism rounded-full flex p-1">
+                    <button class="flex-1 py-2 px-4 rounded-full bg-white text-primary-purple font-medium text-sm">
+                        体重
+                    </button>
+                    <button class="flex-1 py-2 px-4 text-white text-sm">
+                        饮食
+                    </button>
+                    <button class="flex-1 py-2 px-4 text-white text-sm">
+                        身体指标
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 主要内容区域，带滚动 -->
+            <div class="px-6 py-2 h-[650px] overflow-y-auto custom-scrollbar">
+                <!-- 当前体重卡片 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">当前体重</h2>
+                        <button class="text-xs px-3 py-1 rounded-full bg-accent-blue text-white">
+                            添加记录
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="flex items-baseline justify-center">
+                                <span class="text-white text-5xl font-bold number-roll">72.5</span>
+                                <span class="text-white ml-1">kg</span>
+                            </div>
+                            <div class="flex items-center justify-center mt-1">
+                                <i class="fas fa-arrow-down text-green-400 text-xs mr-1"></i>
+                                <span class="text-green-400 text-xs">比上周减少了1.2kg</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 体重目标进度 -->
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-white text-xs">起始: 78kg</span>
+                            <span class="text-white text-xs">目标: 68kg</span>
+                        </div>
+                        <div class="h-2 bg-white bg-opacity-20 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-accent-blue to-accent-purple rounded-full" style="width: 55%;"></div>
+                        </div>
+                        <div class="flex justify-center mt-1">
+                            <span class="text-white text-opacity-70 text-xs">已完成 55%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 体重趋势图表 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">体重趋势</h2>
+                        
+                        <!-- 时间选择器 -->
+                        <div class="flex rounded-full bg-white bg-opacity-20 p-1">
+                            <button class="text-xs px-3 py-1 rounded-full bg-white text-primary-purple">周</button>
+                            <button class="text-xs px-3 py-1 text-white">月</button>
+                            <button class="text-xs px-3 py-1 text-white">年</button>
+                        </div>
+                    </div>
+                    
+                    <!-- SVG图表 -->
+                    <div class="mt-2 mb-4 relative h-44">
+                        <svg width="100%" height="100%" viewBox="0 0 300 150" preserveAspectRatio="none">
+                            <!-- 网格线 -->
+                            <line x1="0" y1="0" x2="300" y2="0" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="149" x2="300" y2="149" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            
+                            <!-- 数据线 -->
+                            <path class="chart-line" d="M0,120 C20,130 40,125 60,100 S100,70 120,75 S160,60 180,50 S240,30 300,40" fill="none" stroke="url(#gradient)" stroke-width="3" stroke-linecap="round" />
+                            
+                            <!-- 渐变填充 -->
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#7F7EFF" stop-opacity="1" />
+                                <stop offset="100%" stop-color="#34D1BF" stop-opacity="0.3" />
+                            </linearGradient>
+                            <path d="M0,120 C20,130 40,125 60,100 S100,70 120,75 S160,60 180,50 S240,30 300,40 V149 H0 Z" fill="url(#gradient)" fill-opacity="0.2" />
+                            
+                            <!-- 数据点 -->
+                            <circle cx="0" cy="120" r="4" fill="#ffffff" />
+                            <circle cx="60" cy="100" r="4" fill="#ffffff" />
+                            <circle cx="120" cy="75" r="4" fill="#ffffff" />
+                            <circle cx="180" cy="50" r="4" fill="#ffffff" />
+                            <circle cx="240" cy="40" r="4" fill="#ffffff" />
+                            <circle cx="300" cy="40" r="4" fill="#ffffff" />
+                        </svg>
+                        
+                        <!-- X轴标签 -->
+                        <div class="flex justify-between text-white text-opacity-70 text-xs mt-2">
+                            <span>周一</span>
+                            <span>周二</span>
+                            <span>周三</span>
+                            <span>周四</span>
+                            <span>周五</span>
+                            <span>周六</span>
+                            <span>周日</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 记录历史 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">记录历史</h2>
+                        <i class="fas fa-filter text-white"></i>
+                    </div>
+                    
+                    <!-- 记录列表 -->
+                    <div class="space-y-3">
+                        <!-- 记录项 -->
+                        <div class="flex justify-between items-center py-3 border-b border-white border-opacity-10">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-accent-blue bg-opacity-30 flex items-center justify-center mr-3">
+                                    <i class="fas fa-weight text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">体重记录</p>
+                                    <p class="text-white text-opacity-70 text-xs">2023-07-09 上午</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-white text-lg font-bold">72.5</span>
+                                <span class="text-white text-xs ml-1">kg</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center py-3 border-b border-white border-opacity-10">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-accent-blue bg-opacity-30 flex items-center justify-center mr-3">
+                                    <i class="fas fa-weight text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">体重记录</p>
+                                    <p class="text-white text-opacity-70 text-xs">2023-07-08 上午</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-white text-lg font-bold">72.8</span>
+                                <span class="text-white text-xs ml-1">kg</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center py-3 border-b border-white border-opacity-10">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-accent-blue bg-opacity-30 flex items-center justify-center mr-3">
+                                    <i class="fas fa-weight text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">体重记录</p>
+                                    <p class="text-white text-opacity-70 text-xs">2023-07-07 上午</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-white text-lg font-bold">73.1</span>
+                                <span class="text-white text-xs ml-1">kg</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center py-3 border-b border-white border-opacity-10">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-accent-blue bg-opacity-30 flex items-center justify-center mr-3">
+                                    <i class="fas fa-weight text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">体重记录</p>
+                                    <p class="text-white text-opacity-70 text-xs">2023-07-06 上午</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-white text-lg font-bold">73.5</span>
+                                <span class="text-white text-xs ml-1">kg</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center py-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-accent-blue bg-opacity-30 flex items-center justify-center mr-3">
+                                    <i class="fas fa-weight text-accent-blue"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">体重记录</p>
+                                    <p class="text-white text-opacity-70 text-xs">2023-07-05 上午</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-white text-lg font-bold">73.7</span>
+                                <span class="text-white text-xs ml-1">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 健康建议 -->
+                <div class="glassmorphism rounded-3xl p-5 mb-16">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-white text-lg font-semibold">健康建议</h2>
+                        <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                    </div>
+                    
+                    <p class="text-white text-sm">根据您的数据分析，建议：</p>
+                    
+                    <div class="mt-3 space-y-3">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <p class="text-white text-sm">您的减重进展顺利，保持现有的16:8轻断食模式。</p>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-glass-water text-white"></i>
+                            </div>
+                            <p class="text-white text-sm">增加每日水分摄入，目标2500ml，有助于进一步促进代谢。</p>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-accent-purple flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-dumbbell text-white"></i>
+                            </div>
+                            <p class="text-white text-sm">考虑添加轻度力量训练，每周2-3次，帮助保持肌肉量。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 浮动添加按钮 -->
+            <div class="absolute right-6 bottom-20">
+                <button class="w-14 h-14 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue flex items-center justify-center shadow-lg">
+                    <i class="fas fa-plus text-white text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- 底部导航栏 -->
+            <div class="glassmorphism w-full absolute bottom-0 left-0 py-4 px-4">
+                <div class="flex justify-around">
+                    <div class="flex flex-col items-center">
+                        <a href="index.html">
+                            <i class="fas fa-home text-xl text-white text-opacity-70"></i>
+                            <span class="text-xs text-white text-opacity-70 mt-1">首页</span>
+                        </a>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-chart-line text-xl nav-active"></i>
+                        <span class="text-xs text-white mt-1">数据</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center -mt-6">
+                            <i class="fas fa-plus text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-comments text-xl text-white text-opacity-70"></i>
+                        <span class="text-xs text-white text-opacity-70 mt-1">社区</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-user text-xl text-white text-opacity-70"></i>
+                        <span class="text-xs text-white text-opacity-70 mt-1">我的</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻盈 - AI助手</title>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义样式 */
+        :root {
+            --primary-purple: #5B2A86;
+            --primary-blue: #1A759F;
+            --accent-purple: #7F7EFF;
+            --accent-blue: #34D1BF;
+            --accent-pink: #FFAAD6;
+            --accent-orange: #FFB347;
+        }
+        
+        /* 弥散渐变背景 */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+        }
+        
+        /* 磨砂玻璃效果 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* 模拟iPhone 15 Pro尺寸和圆角 */
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 54px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* iPhone刘海和动态岛样式 */
+        .iphone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 35px;
+            background-color: #000;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 30;
+        }
+        
+        /* 状态栏调整为透明 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 30px 0px 30px;
+            position: relative;
+            z-index: 20;
+            height: 44px;
+            background: transparent;
+        }
+        
+        /* 装饰图形 */
+        .shape-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 50;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: white;
+        }
+        
+        .nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+        
+        /* 消息样式 */
+        .message {
+            display: flex;
+            margin-bottom: 16px;
+            padding: 0 16px;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .user .message-content {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-bottom-right-radius: 4px;
+        }
+        
+        .ai .message-content {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message p {
+            margin: 0;
+            color: white;
+        }
+        
+        /* 输入状态点动画 */
+        .typing-dots {
+            display: flex;
+            padding: 2px;
+        }
+        
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            margin: 0 1px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: typingDot 1.2s infinite ease-in-out;
+        }
+        
+        .typing-dots span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingDot {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+        
+        /* 常见问题标签 */
+        .topic-tag {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: white;
+            margin: 4px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .topic-tag:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 h-screen overflow-hidden">
+    <!-- iPhone 15 Pro 模拟框架 -->
+    <div class="iphone-frame bg-black">
+        <!-- 刘海/动态岛 -->
+        <div class="iphone-notch"></div>
+        
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="text-white text-xs">10:30</div>
+            <div class="flex space-x-1">
+                <i class="fas fa-signal text-white text-xs"></i>
+                <i class="fas fa-wifi text-white text-xs"></i>
+                <i class="fas fa-battery-three-quarters text-white text-xs"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="bg-gradient-main h-full w-full relative overflow-auto" style="padding-bottom: 80px;">
+            <!-- 装饰图形 -->
+            <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20"></div>
+            <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10"></div>
+            
+            <!-- 顶部导航 -->
+            <div class="sticky top-0 z-10 px-6 py-4 bg-gradient-main">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl font-bold text-white">AI健康助手</h1>
+                    <a href="ai-chat.html" class="w-10 h-10 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                </div>
+                <p class="text-white text-opacity-80 text-sm">由DeepSeek提供智能支持</p>
+            </div>
+            
+            <!-- 聊天容器 -->
+            <div id="chatContainer" class="chat-container overflow-y-auto" style="height: calc(100% - 200px); padding-bottom: 20px;">
+                <!-- 聊天消息将动态添加到这里 -->
+                <div class="message ai mb-4">
+                    <div class="message-content glassmorphism">
+                        <p>你好，我是你的断食助手，有什么我能帮助你的吗？</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 建议问题区域 -->
+            <!-- <div class="px-6 py-3 overflow-x-auto whitespace-nowrap">
+                <div class="topic-tags flex">
+                    <button class="topic-tag">断食有什么好处</button>
+                    <button class="topic-tag">断食期间的饮食建议</button>
+                    <button class="topic-tag">如何解决饥饿感</button>
+                    <button class="topic-tag">运动与断食</button>
+                    <button class="topic-tag">断食常见问题</button>
+                </div>
+            </div>
+             -->
+           
+        </div>
+         <!-- 输入区域 -->
+         <div class="input-area fixed left-5 right-5 glassmorphism rounded-full flex items-center p-1" style="bottom: 80px; z-index: 40;">
+            <input id="userInput" type="text" placeholder="输入你的问题..." class="flex-1 bg-transparent text-white p-3 outline-none">
+            <button id="sendButton" class="w-10 h-10 bg-accent-pink rounded-full flex items-center justify-center text-white">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+         <!-- 底部导航栏 -->
+         <div class="bottom-nav">
+            <div class="flex justify-around">
+                <a href="home.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="ai.html" class="nav-item active">
+                    <i class="fas fa-robot"></i>
+                    <span>AI助手</span>
+                </a>
+                <a href="data.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>数据</span>
+                </a>
+                <a href="community.html" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>社区</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>我的</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const chatContainer = document.getElementById('chatContainer');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            const topicTags = document.querySelectorAll('.topic-tag');
+            
+            // 预设的历史对话数据
+            const chatHistory = [
+                {sender: 'user', text: '16:8断食法是什么？'},
+                {sender: 'ai', text: '16:8断食法是一种间歇性断食方式，每天有16小时的禁食期和8小时的进食窗口。在禁食期只能喝水、无糖茶或黑咖啡，在8小时的进食窗口内可以正常饮食。这是一种比较温和的断食方式，适合初学者。'},
+                {sender: 'user', text: '断食期间可以喝什么？'},
+                {sender: 'ai', text: '断食期间可以喝水、黑咖啡（不加奶或糖）和无糖茶（如绿茶、红茶或草本茶）。这些饮料不含卡路里，不会打破断食状态。但要避免含糖饮料、果汁、奶制品和酒精，因为它们含有卡路里会触发胰岛素反应。'},
+                {sender: 'user', text: '如何缓解断食期间的饥饿感？'},
+                {sender: 'ai', text: '缓解断食期间饥饿感的方法包括：多喝水或无糖饮料、适当补充电解质、保持忙碌转移注意力、避免看食物相关内容、确保充足睡眠、调整断食时间（如在睡眠时间内完成大部分断食）以及在进食窗口期摄入足够的蛋白质和健康脂肪提供持久饱腹感。'}
+            ];
+            
+            // 初始化添加历史对话
+            function initChatHistory() {
+                // 清空容器中的欢迎消息
+                chatContainer.innerHTML = '';
+                
+                // 添加历史对话消息
+                chatHistory.forEach(message => {
+                    addMessage(message.text, message.sender);
+                });
+            }
+            
+            // 调用初始化历史对话
+            initChatHistory();
+            
+            // 预设的AI回复
+            const aiResponses = [
+                "16:8的断食法是指每天16小时不进食，8小时在进食窗口内进食。这是一种比较温和的断食方式，适合初学者。",
+                "断食期间可以喝水、黑咖啡和无糖茶，但要避免添加奶油、糖或其他卡路里。",
+                "断食的好处包括：促进细胞自噬、改善胰岛素敏感性、帮助减重、可能延长寿命等。",
+                "如果你感到头晕或不适，可以适当补充电解质，比如钠、钾和镁。",
+                "在进食窗口期间，建议食用富含蛋白质和健康脂肪的食物，减少精制碳水化合物和糖的摄入。",
+                "断食初期可能会感到饥饿、疲劳或情绪波动，这是正常的适应反应，通常会在几天后改善。",
+                "对于初学者，建议从12:12的断食时间开始，然后逐渐延长至16:8或更长。",
+                "研究表明，间歇性断食可以帮助减少体脂百分比，同时保留肌肉质量。",
+                "喝足够的水对于断食非常重要，它可以帮助控制饥饿感并保持身体水分。",
+                "如果你有任何健康问题，比如糖尿病或低血压，请在开始断食前咨询医生的建议。"
+            ];
+            
+            // 发送消息的函数
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    // 添加用户消息到聊天容器
+                    addMessage(message, 'user');
+                    
+                    // 清空输入框
+                    userInput.value = '';
+                    
+                    // 显示AI正在输入的状态
+                    showTypingIndicator();
+                    
+                    // 模拟AI延迟回复
+                    setTimeout(() => {
+                        // 移除输入指示器
+                        removeTypingIndicator();
+                        
+                        // 随机选择一个AI回复或基于关键词选择回复
+                        let response = getAIResponse(message);
+                        
+                        // 添加AI回复到聊天容器
+                        addMessage(response, 'ai');
+                        
+                        // 滚动到最新消息
+                        scrollToBottom();
+                    }, 1500);
+                    
+                    // 立即滚动到底部，显示用户刚发送的消息
+                    scrollToBottom();
+                }
+            }
+            
+            // 添加消息到聊天容器
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender} mb-4`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content ' + (sender === 'ai' ? 'glassmorphism' : 'bg-white bg-opacity-20');
+                
+                const paragraph = document.createElement('p');
+                paragraph.textContent = text;
+                
+                contentDiv.appendChild(paragraph);
+                messageDiv.appendChild(contentDiv);
+                chatContainer.appendChild(messageDiv);
+            }
+            
+            // 显示"AI正在输入"的指示器
+            function showTypingIndicator() {
+                const indicatorDiv = document.createElement('div');
+                indicatorDiv.className = 'message ai mb-4 typing-indicator';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content glassmorphism';
+                
+                const dotsDiv = document.createElement('div');
+                dotsDiv.className = 'typing-dots';
+                dotsDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
+                
+                contentDiv.appendChild(dotsDiv);
+                indicatorDiv.appendChild(contentDiv);
+                chatContainer.appendChild(indicatorDiv);
+                
+                scrollToBottom();
+            }
+            
+            // 移除输入指示器
+            function removeTypingIndicator() {
+                const indicator = document.querySelector('.typing-indicator');
+                if (indicator) {
+                    chatContainer.removeChild(indicator);
+                }
+            }
+            
+            // 根据用户输入获取AI回复
+            function getAIResponse(userMessage) {
+                // 关键词映射
+                const keywordResponses = {
+                    '断食方法': "最常见的断食方法包括16:8、18:6、20:4和OMAD（一日一餐）。16:8是最适合初学者的方法，每天有8小时的进食窗口。",
+                    '饮食': "断食期间可以喝水、黑咖啡和无糖茶。进食窗口期应该选择营养丰富的食物，如蛋白质、健康脂肪、蔬菜和全谷物。",
+                    '好处': "断食的好处包括减重、提高胰岛素敏感性、减少炎症、促进细胞自噬和改善心血管健康等。",
+                    '注意事项': "断食并不适合所有人，孕妇、哺乳期妇女、未成年人、老年人和特定疾病患者应避免断食。如有疑虑，请咨询医生。",
+                    '运动': "轻度至中度运动可以与断食结合。建议在进食窗口前后进行高强度训练，断食期间可以进行低强度活动如瑜伽或散步。",
+                    '副作用': "断食初期可能会出现头晕、疲劳、饥饿感增加、情绪波动等症状，通常会在适应后减轻。",
+                    '开始': "建议从较短的断食时间开始，如12:12，逐渐延长至16:8或更长。保持充分水分摄入，合理安排进食窗口时间。",
+                    '你好': "你好！我是你的断食助手，有任何关于间歇性断食的问题都可以问我。",
+                    '帮助': "我可以回答你关于断食方法、饮食建议、断食好处、注意事项等问题。有什么特定的断食知识需要了解吗？"
+                };
+                
+                // 转换为小写便于匹配
+                const lowercaseMessage = userMessage.toLowerCase();
+                
+                // 检查关键词匹配
+                for (const keyword in keywordResponses) {
+                    if (lowercaseMessage.includes(keyword.toLowerCase())) {
+                        return keywordResponses[keyword];
+                    }
+                }
+                
+                // 如果没有匹配到关键词，返回随机回复
+                return aiResponses[Math.floor(Math.random() * aiResponses.length)];
+            }
+            
+            // 滚动到聊天容器底部
+            function scrollToBottom() {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            // 发送按钮点击事件
+            sendButton.addEventListener('click', sendMessage);
+            
+            // 输入框按Enter键发送消息
+            userInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 添加输入框获得焦点样式
+            userInput.addEventListener('focus', function() {
+                this.parentElement.style.boxShadow = '0 0 0 2px rgba(255, 170, 214, 0.5)';
+            });
+            
+            userInput.addEventListener('blur', function() {
+                this.parentElement.style.boxShadow = 'none';
+            });
+
+            // 添加话题标签点击事件
+            topicTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const question = this.textContent.trim();
+                    
+                    // 添加用户消息
+                    addMessage(question, 'user');
+                    
+                    // 显示AI正在输入的状态
+                    showTypingIndicator();
+                    
+                    // 模拟AI延迟回复
+                    setTimeout(() => {
+                        // 移除输入指示器
+                        removeTypingIndicator();
+                        
+                        // 获取对应的回复
+                        let response = getAIResponse(question);
+                        
+                        // 添加AI回复
+                        addMessage(response, 'ai');
+                        
+                        // 滚动到最新消息
+                        scrollToBottom();
+                    }, 1500);
+                    
+                    // 立即滚动到底部，显示用户刚发送的消息
+                    scrollToBottom();
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
