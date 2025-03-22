@@ -22,6 +22,12 @@
         /* 弥散渐变背景 */
         .bg-gradient-main {
             background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
         }
         
         /* 模拟iPhone 15 Pro尺寸和圆角 */
@@ -32,6 +38,66 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* iPhone灵动岛 */
+        .dynamic-island {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 125px;
+            height: 34px;
+            background-color: black;
+            border-radius: 20px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 模拟摄像头和扬声器 */
+        .camera {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #222;
+            border-radius: 50%;
+            top: 12px;
+            right: 20px;
+        }
+        
+        .camera::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #444;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+        }
+        
+        .speaker {
+            position: absolute;
+            width: 40px;
+            height: 5px;
+            background-color: #222;
+            border-radius: 3px;
+            top: 14px;
+            left: 30px;
+        }
+        
+        /* 添加手机边框发光效果 */
+        .phone-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 54px;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            z-index: 900;
         }
         
         /* 呼吸动画效果 */
@@ -54,6 +120,7 @@
             background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fill="rgba(255, 255, 255, 0.1)" /></svg>');
             background-size: 100% 100%;
             animation: wave-animation 10s linear infinite;
+            z-index: 5;
         }
         
         .wave-2 {
@@ -76,23 +143,50 @@
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
+        
+        /* 内容区域 */
+        .content-area {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 50px 20px 10px;
+            z-index: 90;
+        }
     </style>
 </head>
 <body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
     <!-- iPhone 15 Pro 模拟框架 -->
     <div class="iphone-frame bg-black">
-        <!-- 状态栏 -->
-        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
-            <div>10:30</div>
-            <div class="flex space-x-1">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-three-quarters"></i>
-            </div>
-        </div>
-        
         <!-- 动态渐变背景 -->
-        <div class="bg-gradient-main h-full w-full flex flex-col justify-center items-center relative">
+        <div class="bg-gradient-main"></div>
+        
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <!-- 状态栏 -->
+            <div class="status-bar text-white text-xs">
+                <div>10:30</div>
+                <div class="flex space-x-1">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-three-quarters"></i>
+                </div>
+            </div>
+            
             <!-- Logo 与标语 -->
             <div class="flex flex-col items-center">
                 <!-- Logo 设计 -->
@@ -120,10 +214,6 @@
                 <p>© 2023 轻盈 All Rights Reserved</p>
             </div>
             
-            <!-- 底部波浪装饰 -->
-            <div class="wave"></div>
-            <div class="wave wave-2"></div>
-            
             <!-- 点击进入提示 -->
             <div class="absolute bottom-24 w-full text-center">
                 <a href="onboarding.html" class="inline-block">
@@ -132,14 +222,19 @@
                 </a>
             </div>
         </div>
+        
+        <!-- 底部波浪装饰 -->
+        <div class="wave"></div>
+        <div class="wave wave-2"></div>
+        
+        <!-- 灵动岛 -->
+        <div class="dynamic-island">
+            <div class="camera"></div>
+            <div class="speaker"></div>
+        </div>
+        
+        <!-- 手机边框效果 -->
+        <div class="phone-border"></div>
     </div>
-    
-    <!-- 自动跳转脚本 -->
-    <script>
-        // 3秒后自动跳转到引导页
-        setTimeout(function(){
-            window.location.href = 'onboarding.html';
-        }, 3000);
-    </script>
 </body>
 </html> 

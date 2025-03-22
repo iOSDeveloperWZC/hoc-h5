@@ -8,6 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 全屏按钮脚本 -->
+    <script src="fullscreen-button.js"></script>
+    <!-- 公共样式 - 灵动岛等 -->
+    <link rel="stylesheet" href="common-styles.css">
+    <!-- 公共元素脚本 -->
+    <script src="common-elements.js"></script>
     <style>
         /* 自定义样式 */
         :root {
@@ -94,138 +100,146 @@
 <body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
     <!-- iPhone 15 Pro 模拟框架 -->
     <div class="iphone-frame bg-black">
-        <!-- 状态栏 -->
-        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
-            <div>10:30</div>
-            <div class="flex space-x-1">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-three-quarters"></i>
-            </div>
-        </div>
-        
-        <!-- 动态渐变背景 -->
         <div class="bg-gradient-main h-full w-full relative">
-            <!-- 装饰图形 -->
-            <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20 floating-slow"></div>
-            <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10 floating"></div>
+            <!-- 灵动岛 -->
+            <div class="dynamic-island">
+                <div class="camera"></div>
+                <div class="speaker"></div>
+            </div>
             
-            <!-- 水平滚动轮播 -->
-            <div class="carousel-container flex overflow-x-auto h-full absolute top-0 left-0 right-0 bottom-0 hide-scrollbar" id="carousel">
-                <!-- 第一页：科学轻断食 -->
-                <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
-                    <!-- 插图 -->
-                    <div class="w-64 h-64 mb-12 relative">
-                        <div class="absolute inset-0 flex justify-center items-center">
-                            <i class="fas fa-clock text-white text-9xl opacity-60 floating"></i>
-                        </div>
-                        <div class="absolute top-10 left-12">
-                            <i class="fas fa-apple-alt text-white text-3xl opacity-80 floating-fast"></i>
-                        </div>
-                        <div class="absolute bottom-10 right-12">
-                            <i class="fas fa-utensils text-white text-3xl opacity-80 floating-slow"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- 文本 -->
-                    <h2 class="text-white text-2xl font-bold mb-4 text-center">科学轻断食</h2>
-                    <p class="text-white text-opacity-80 text-center mb-6">
-                        基于科学研究的轻断食方案，帮助你健康减重，不必严格限制食物种类
-                    </p>
-                </div>
-                
-                <!-- 第二页：个性化定制 -->
-                <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
-                    <!-- 插图 -->
-                    <div class="w-64 h-64 mb-12 relative">
-                        <div class="absolute inset-0 flex justify-center items-center">
-                            <i class="fas fa-fingerprint text-white text-9xl opacity-60 floating"></i>
-                        </div>
-                        <div class="absolute top-20 left-10">
-                            <i class="fas fa-chart-line text-white text-3xl opacity-80 floating-fast"></i>
-                        </div>
-                        <div class="absolute bottom-20 right-10">
-                            <i class="fas fa-dna text-white text-3xl opacity-80 floating-slow"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- 文本 -->
-                    <h2 class="text-white text-2xl font-bold mb-4 text-center">个性化定制</h2>
-                    <p class="text-white text-opacity-80 text-center mb-6">
-                        根据你的体质、生活习惯和健康目标，AI智能定制专属轻断食计划
-                    </p>
-                </div>
-                
-                <!-- 第三页：专业指导 -->
-                <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
-                    <!-- 插图 -->
-                    <div class="w-64 h-64 mb-12 relative">
-                        <div class="absolute inset-0 flex justify-center items-center">
-                            <i class="fas fa-robot text-white text-9xl opacity-60 floating"></i>
-                        </div>
-                        <div class="absolute top-16 left-14">
-                            <i class="fas fa-comments text-white text-3xl opacity-80 floating-fast"></i>
-                        </div>
-                        <div class="absolute bottom-16 right-14">
-                            <i class="fas fa-brain text-white text-3xl opacity-80 floating-slow"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- 文本 -->
-                    <h2 class="text-white text-2xl font-bold mb-4 text-center">AI专业指导</h2>
-                    <p class="text-white text-opacity-80 text-center mb-6">
-                        DeepSeek智能助手随时解答你的健康问题，提供专业建议和支持
-                    </p>
-                </div>
-                
-                <!-- 第四页：社区支持 -->
-                <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
-                    <!-- 插图 -->
-                    <div class="w-64 h-64 mb-12 relative">
-                        <div class="absolute inset-0 flex justify-center items-center">
-                            <i class="fas fa-users text-white text-9xl opacity-60 floating"></i>
-                        </div>
-                        <div class="absolute top-14 left-16">
-                            <i class="fas fa-medal text-white text-3xl opacity-80 floating-fast"></i>
-                        </div>
-                        <div class="absolute bottom-14 right-16">
-                            <i class="fas fa-heart text-white text-3xl opacity-80 floating-slow"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- 文本 -->
-                    <h2 class="text-white text-2xl font-bold mb-4 text-center">社区支持</h2>
-                    <p class="text-white text-opacity-80 text-center mb-6">
-                        与志同道合的伙伴一起，分享经验，互相鼓励，共同进步
-                    </p>
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <div class="text-white text-xs">10:30</div>
+                <div class="text-white text-xs flex space-x-1">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-three-quarters"></i>
                 </div>
             </div>
             
-            <!-- 底部控制区 -->
-            <div class="absolute bottom-0 left-0 right-0 pb-12 px-8">
-                <!-- 页面指示器 -->
-                <div class="flex justify-center mb-8" id="indicators">
-                    <div class="w-2 h-2 rounded-full bg-white mx-1 indicator-active" data-index="0"></div>
-                    <div class="w-2 h-2 rounded-full bg-white bg-opacity-40 mx-1" data-index="1"></div>
-                    <div class="w-2 h-2 rounded-full bg-white bg-opacity-40 mx-1" data-index="2"></div>
-                    <div class="w-2 h-2 rounded-full bg-white bg-opacity-40 mx-1" data-index="3"></div>
+            <!-- 引导页滑块 -->
+            <div class="h-full flex flex-col">
+                <!-- 装饰图形 -->
+                <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20 floating-slow"></div>
+                <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10 floating"></div>
+                
+                <!-- 水平滚动轮播 -->
+                <div class="carousel-container flex overflow-x-auto h-full absolute top-0 left-0 right-0 bottom-0 hide-scrollbar" id="carousel">
+                    <!-- 第一页：科学轻断食 -->
+                    <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
+                        <!-- 插图 -->
+                        <div class="w-64 h-64 mb-12 relative">
+                            <div class="absolute inset-0 flex justify-center items-center">
+                                <i class="fas fa-clock text-white text-9xl opacity-60 floating"></i>
+                            </div>
+                            <div class="absolute top-10 left-12">
+                                <i class="fas fa-apple-alt text-white text-3xl opacity-80 floating-fast"></i>
+                            </div>
+                            <div class="absolute bottom-10 right-12">
+                                <i class="fas fa-utensils text-white text-3xl opacity-80 floating-slow"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 文本 -->
+                        <h2 class="text-white text-2xl font-bold mb-4 text-center">科学轻断食</h2>
+                        <p class="text-white text-opacity-80 text-center mb-6">
+                            基于科学研究的轻断食方案，帮助你健康减重，不必严格限制食物种类
+                        </p>
+                    </div>
+                    
+                    <!-- 第二页：个性化定制 -->
+                    <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
+                        <!-- 插图 -->
+                        <div class="w-64 h-64 mb-12 relative">
+                            <div class="absolute inset-0 flex justify-center items-center">
+                                <i class="fas fa-fingerprint text-white text-9xl opacity-60 floating"></i>
+                            </div>
+                            <div class="absolute top-20 left-10">
+                                <i class="fas fa-chart-line text-white text-3xl opacity-80 floating-fast"></i>
+                            </div>
+                            <div class="absolute bottom-20 right-10">
+                                <i class="fas fa-dna text-white text-3xl opacity-80 floating-slow"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 文本 -->
+                        <h2 class="text-white text-2xl font-bold mb-4 text-center">个性化定制</h2>
+                        <p class="text-white text-opacity-80 text-center mb-6">
+                            根据你的体质、生活习惯和健康目标，AI智能定制专属轻断食计划
+                        </p>
+                    </div>
+                    
+                    <!-- 第三页：专业指导 -->
+                    <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
+                        <!-- 插图 -->
+                        <div class="w-64 h-64 mb-12 relative">
+                            <div class="absolute inset-0 flex justify-center items-center">
+                                <i class="fas fa-robot text-white text-9xl opacity-60 floating"></i>
+                            </div>
+                            <div class="absolute top-16 left-14">
+                                <i class="fas fa-comments text-white text-3xl opacity-80 floating-fast"></i>
+                            </div>
+                            <div class="absolute bottom-16 right-14">
+                                <i class="fas fa-brain text-white text-3xl opacity-80 floating-slow"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 文本 -->
+                        <h2 class="text-white text-2xl font-bold mb-4 text-center">AI专业指导</h2>
+                        <p class="text-white text-opacity-80 text-center mb-6">
+                            DeepSeek智能助手随时解答你的健康问题，提供专业建议和支持
+                        </p>
+                    </div>
+                    
+                    <!-- 第四页：社区支持 -->
+                    <div class="carousel-item w-full h-full flex flex-col justify-center items-center px-8 relative">
+                        <!-- 插图 -->
+                        <div class="w-64 h-64 mb-12 relative">
+                            <div class="absolute inset-0 flex justify-center items-center">
+                                <i class="fas fa-users text-white text-9xl opacity-60 floating"></i>
+                            </div>
+                            <div class="absolute top-14 left-16">
+                                <i class="fas fa-medal text-white text-3xl opacity-80 floating-fast"></i>
+                            </div>
+                            <div class="absolute bottom-14 right-16">
+                                <i class="fas fa-heart text-white text-3xl opacity-80 floating-slow"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 文本 -->
+                        <h2 class="text-white text-2xl font-bold mb-4 text-center">社区支持</h2>
+                        <p class="text-white text-opacity-80 text-center mb-6">
+                            与志同道合的伙伴一起，分享经验，互相鼓励，共同进步
+                        </p>
+                    </div>
                 </div>
                 
-                <!-- 按钮区域 -->
-                <div class="flex flex-col space-y-4">
-                    <a href="register.html" class="bg-white py-3 rounded-xl flex justify-center items-center text-primary-purple font-semibold">
-                        开始体验
-                    </a>
-                    <a href="register.html" class="glassmorphism py-3 rounded-xl flex justify-center items-center text-white">
-                        已有账号？登录
-                    </a>
-                </div>
-                
-                <!-- 底部说明 -->
-                <div class="mt-4 text-center">
-                    <p class="text-white text-opacity-60 text-xs">
-                        登录即代表您同意我们的<a href="#" class="underline">服务条款</a>和<a href="#" class="underline">隐私政策</a>
-                    </p>
+                <!-- 底部控制区 -->
+                <div class="absolute bottom-0 left-0 right-0 pb-12 px-8">
+                    <!-- 页面指示器 -->
+                    <div class="flex justify-center mb-8" id="indicators">
+                        <div class="w-2 h-2 rounded-full bg-white mx-1 indicator-active" data-index="0"></div>
+                        <div class="w-2 h-2 rounded-full bg-white bg-opacity-40 mx-1" data-index="1"></div>
+                        <div class="w-2 h-2 rounded-full bg-white bg-opacity-40 mx-1" data-index="2"></div>
+                        <div class="w-2 h-2 rounded-full bg-white bg-opacity-40 mx-1" data-index="3"></div>
+                    </div>
+                    
+                    <!-- 按钮区域 -->
+                    <div class="flex flex-col space-y-4">
+                        <a href="register.html" class="bg-white py-3 rounded-xl flex justify-center items-center text-primary-purple font-semibold">
+                            开始体验
+                        </a>
+                        <a href="register.html" class="glassmorphism py-3 rounded-xl flex justify-center items-center text-white">
+                            已有账号？登录
+                        </a>
+                    </div>
+                    
+                    <!-- 底部说明 -->
+                    <div class="mt-4 text-center">
+                        <p class="text-white text-opacity-60 text-xs">
+                            登录即代表您同意我们的<a href="#" class="underline">服务条款</a>和<a href="#" class="underline">隐私政策</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -8,6 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 全屏按钮脚本 -->
+    <script src="fullscreen-button.js"></script>
+    <!-- 公共样式 - 灵动岛等 -->
+    <link rel="stylesheet" href="common-styles.css">
+    <!-- 公共元素脚本 -->
+    <script src="common-elements.js"></script>
     <style>
         /* 自定义样式 */
         :root {
@@ -65,15 +71,32 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 h-screen overflow-hidden">
+<body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
     <!-- iPhone 15 Pro 模拟框架 -->
-    <div class="iphone-frame">
-        <div class="bg-gradient-main h-full w-full relative overflow-auto">
+    <div class="iphone-frame bg-black">
+        <!-- 动态渐变背景 -->
+        <div class="bg-gradient-main h-full w-full relative">
             <!-- 装饰图形 -->
             <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20"></div>
             <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10"></div>
             
-            <div class="w-full px-8 pt-12">
+            <!-- 灵动岛 -->
+            <div class="dynamic-island">
+                <div class="camera"></div>
+                <div class="speaker"></div>
+            </div>
+            
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <div class="text-white text-xs">10:30</div>
+                <div class="text-white text-xs flex space-x-1">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-three-quarters"></i>
+                </div>
+            </div>
+            
+            <div class="w-full px-8 pt-16">
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-white mb-2">轻盈</h1>
                     <p class="text-white text-opacity-80">你的智能断食助手</p>

@@ -8,6 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 全屏按钮脚本 -->
+    <script src="fullscreen-button.js"></script>
+    <!-- 公共样式 - 灵动岛等 -->
+    <link rel="stylesheet" href="common-styles.css">
+    <!-- 公共元素脚本 -->
+    <script src="common-elements.js"></script>
     <style>
         /* 自定义样式 */
         :root {
@@ -72,7 +78,29 @@
         
         @keyframes wave {
             0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-6px); }
+            30% { transform: translateY(-4px); }
+        }
+        
+        /* 装饰图形 */
+        .shape-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        /* 聊天容器样式 */
+        .chat-container {
+            height: calc(100% - 220px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        /* 输入区域样式 */
+        .input-area {
+            width: 100%;
+            max-width: 100%;
         }
         
         /* 自定义滚动条 */
@@ -117,23 +145,32 @@
         }
     </style>
 </head>
-<body class="flex justify-center items-center min-h-screen bg-gray-900 p-4">
+<body class="flex justify-center items-center min-h-screen bg-gray-900 overflow-hidden">
     <!-- iPhone 15 Pro 模拟框架 -->
     <div class="iphone-frame bg-black">
-        <!-- 状态栏 -->
-        <div class="flex justify-between items-center px-6 pt-3 pb-2 text-white text-xs">
-            <div>10:30</div>
-            <div class="flex space-x-1">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-three-quarters"></i>
+        <div class="bg-gradient-main h-full w-full relative">
+            <!-- 装饰图形 -->
+            <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20"></div>
+            <div class="shape-blob w-48 h-48 bg-accent-blue bottom-40 -right-10"></div>
+            
+            <!-- 灵动岛 -->
+            <div class="dynamic-island">
+                <div class="camera"></div>
+                <div class="speaker"></div>
             </div>
-        </div>
-        
-        <!-- 动态渐变背景 -->
-        <div class="bg-gradient-main h-full w-full overflow-hidden relative">
+            
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <div class="text-white text-xs">10:30</div>
+                <div class="text-white text-xs flex space-x-1">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-three-quarters"></i>
+                </div>
+            </div>
+            
             <!-- 顶部导航栏 -->
-            <div class="glassmorphism flex justify-between items-center px-6 py-4">
+            <div class="glassmorphism flex justify-between items-center px-6 py-4 mt-16">
                 <a href="ai.html" class="flex items-center text-white">
                     <i class="fas fa-chevron-left mr-2"></i>
                     <span>返回</span>
@@ -155,101 +192,100 @@
             </div>
             
             <!-- 常见问题胶囊 -->
-            <div class="px-6 py-2 overflow-x-auto whitespace-nowrap mb-2 flex space-x-2">
-                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap">
+            <div class="px-6 py-2 overflow-x-auto whitespace-nowrap mb-2 flex space-x-2 justify-center">
+                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap text-center">
                     断食期能喝什么
                 </button>
-                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap">
+                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap text-center">
                     如何控制饥饿感
                 </button>
-                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap">
+                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap text-center">
                     最佳进食时间
                 </button>
-                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap">
+                <button class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm whitespace-nowrap text-center">
                     减重停滞期如何突破
                 </button>
             </div>
             
-            <!-- 聊天内容区 -->
-            <div class="px-6 py-4 h-[450px] overflow-y-auto custom-scrollbar">
-                <!-- 时间分隔 -->
-                <div class="flex justify-center mb-6">
-                    <span class="text-white text-opacity-70 text-xs px-4 py-1 rounded-full bg-white bg-opacity-10">今天 10:15</span>
-                </div>
-                
-                <!-- AI消息 -->
-                <div class="flex mb-6">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center mr-2 flex-shrink-0">
-                        <i class="fas fa-robot text-white text-xs"></i>
-                    </div>
-                    <div class="max-w-[70%]">
-                        <div class="glassmorphism rounded-2xl rounded-tl-none p-3 mb-1">
-                            <p class="text-white text-sm">早上好，王小明！今天是您轻断食的第7天，感觉如何？</p>
+            <!-- 聊天内容区域 -->
+            <div class="chat-container px-4">
+                <!-- 聊天内容区 -->
+                <div class="py-4">
+                    <!-- AI消息 -->
+                    <div class="flex mb-6">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center mr-2 flex-shrink-0">
+                            <i class="fas fa-robot text-white text-xs"></i>
                         </div>
-                        <span class="text-white text-opacity-50 text-xs">10:15</span>
-                    </div>
-                </div>
-                
-                <!-- 用户消息 -->
-                <div class="flex justify-end mb-6">
-                    <div class="max-w-[70%]">
-                        <div class="bg-accent-purple rounded-2xl rounded-tr-none p-3 mb-1">
-                            <p class="text-white text-sm">今天感觉很好，但是我有个问题，断食期间可以喝咖啡吗？</p>
-                        </div>
-                        <div class="flex justify-end">
-                            <span class="text-white text-opacity-50 text-xs">10:17</span>
+                        <div class="max-w-[70%]">
+                            <div class="glassmorphism rounded-2xl rounded-tl-none p-3 mb-1">
+                                <p class="text-white text-sm">你好！我是你的断食助手，可以解答你关于轻断食的任何问题。</p>
+                                <p class="text-white text-sm mt-2">有什么我能帮到你的吗？</p>
+                            </div>
+                            <span class="text-white text-opacity-50 text-xs">10:15</span>
                         </div>
                     </div>
-                    <div class="w-8 h-8 rounded-full bg-gray-200 ml-2 flex-shrink-0 overflow-hidden">
-                        <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="用户头像" class="w-full h-full object-cover">
-                    </div>
-                </div>
-                
-                <!-- AI消息 - 长回复 -->
-                <div class="flex mb-6">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center mr-2 flex-shrink-0">
-                        <i class="fas fa-robot text-white text-xs"></i>
-                    </div>
-                    <div class="max-w-[70%]">
-                        <div class="glassmorphism rounded-2xl rounded-tl-none p-3 mb-1">
-                            <p class="text-white text-sm">是的，断食期间可以喝<b>黑咖啡</b>，它几乎不含卡路里，不会打破你的断食状态。</p>
-                            <p class="text-white text-sm mt-2">但需要注意:</p>
-                            <ul class="text-white text-sm list-disc pl-5 mt-1">
-                                <li>不要加糖、奶精或牛奶</li>
-                                <li>控制咖啡因摄入量</li>
-                                <li>保持足够的水分摄入</li>
-                            </ul>
-                            <p class="text-white text-sm mt-2">适量的黑咖啡实际上可能有助于抑制饥饿感，还能提高新陈代谢。</p>
+                    
+                    <!-- 用户消息 -->
+                    <div class="flex justify-end mb-6">
+                        <div class="max-w-[70%]">
+                            <div class="bg-accent-purple rounded-2xl rounded-tr-none p-3 mb-1">
+                                <p class="text-white text-sm">今天感觉很好，但是我有个问题，断食期间可以喝咖啡吗？</p>
+                            </div>
+                            <div class="flex justify-end">
+                                <span class="text-white text-opacity-50 text-xs">10:17</span>
+                            </div>
                         </div>
-                        <span class="text-white text-opacity-50 text-xs">10:18</span>
-                    </div>
-                </div>
-                
-                <!-- 用户消息 -->
-                <div class="flex justify-end mb-6">
-                    <div class="max-w-[70%]">
-                        <div class="bg-accent-purple rounded-2xl rounded-tr-none p-3 mb-1">
-                            <p class="text-white text-sm">明白了，那茶呢？绿茶可以喝吗？</p>
-                        </div>
-                        <div class="flex justify-end">
-                            <span class="text-white text-opacity-50 text-xs">10:20</span>
+                        <div class="w-8 h-8 rounded-full bg-gray-200 ml-2 flex-shrink-0 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="用户头像" class="w-full h-full object-cover">
                         </div>
                     </div>
-                    <div class="w-8 h-8 rounded-full bg-gray-200 ml-2 flex-shrink-0 overflow-hidden">
-                        <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="用户头像" class="w-full h-full object-cover">
+                    
+                    <!-- AI消息 - 长回复 -->
+                    <div class="flex mb-6">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center mr-2 flex-shrink-0">
+                            <i class="fas fa-robot text-white text-xs"></i>
+                        </div>
+                        <div class="max-w-[70%]">
+                            <div class="glassmorphism rounded-2xl rounded-tl-none p-3 mb-1">
+                                <p class="text-white text-sm">是的，断食期间可以喝<b>黑咖啡</b>，它几乎不含卡路里，不会打破你的断食状态。</p>
+                                <p class="text-white text-sm mt-2">但需要注意:</p>
+                                <ul class="text-white text-sm list-disc pl-5 mt-1">
+                                    <li>不要加糖、奶精或牛奶</li>
+                                    <li>控制咖啡因摄入量</li>
+                                    <li>保持足够的水分摄入</li>
+                                </ul>
+                                <p class="text-white text-sm mt-2">适量的黑咖啡实际上可能有助于抑制饥饿感，还能提高新陈代谢。</p>
+                            </div>
+                            <span class="text-white text-opacity-50 text-xs">10:18</span>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- AI正在输入... -->
-                <div class="flex mb-6">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center mr-2 flex-shrink-0">
-                        <i class="fas fa-robot text-white text-xs"></i>
+                    
+                    <!-- 用户消息 -->
+                    <div class="flex justify-end mb-6">
+                        <div class="max-w-[70%]">
+                            <div class="bg-accent-purple rounded-2xl rounded-tr-none p-3 mb-1">
+                                <p class="text-white text-sm">明白了，那茶呢？绿茶可以喝吗？</p>
+                            </div>
+                            <div class="flex justify-end">
+                                <span class="text-white text-opacity-50 text-xs">10:20</span>
+                            </div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-gray-200 ml-2 flex-shrink-0 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="用户头像" class="w-full h-full object-cover">
+                        </div>
                     </div>
-                    <div class="max-w-[70%]">
-                        <div class="glassmorphism rounded-2xl rounded-tl-none p-3 mb-1 flex">
-                            <span class="wave-dot rounded-full h-2 w-2 bg-white mx-0.5"></span>
-                            <span class="wave-dot rounded-full h-2 w-2 bg-white mx-0.5"></span>
-                            <span class="wave-dot rounded-full h-2 w-2 bg-white mx-0.5"></span>
+                    
+                    <!-- AI正在输入... -->
+                    <div class="flex mb-6">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center mr-2 flex-shrink-0">
+                            <i class="fas fa-robot text-white text-xs"></i>
+                        </div>
+                        <div class="max-w-[70%]">
+                            <div class="glassmorphism rounded-2xl rounded-tl-none p-3 mb-1 flex">
+                                <span class="wave-dot rounded-full h-2 w-2 bg-white mx-0.5"></span>
+                                <span class="wave-dot rounded-full h-2 w-2 bg-white mx-0.5"></span>
+                                <span class="wave-dot rounded-full h-2 w-2 bg-white mx-0.5"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -258,7 +294,7 @@
             
         </div>
         <!-- 底部输入区域 -->
-        <div class="glassmorphism absolute bottom-0 left-0 right-0 px-4 py-4">
+        <div class="input-area glassmorphism absolute bottom-0 left-0 right-0 px-4 py-4">
             <div class="flex items-center">
                 <!-- 语音按钮 -->
                 <button class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-2">
@@ -282,18 +318,35 @@
             </div>
             
             <!-- 底部建议问题 -->
-            <div class="mt-3 flex space-x-2 overflow-x-auto whitespace-nowrap pb-1">
-                <button class="px-3 py-1 bg-white bg-opacity-10 rounded-full text-white text-xs whitespace-nowrap">
+            <div class="mt-3 flex space-x-2 overflow-x-auto whitespace-nowrap pb-1 justify-center">
+                <button class="px-3 py-1 bg-white bg-opacity-10 rounded-full text-white text-xs whitespace-nowrap text-center">
                     绿茶的好处是什么？
                 </button>
-                <button class="px-3 py-1 bg-white bg-opacity-10 rounded-full text-white text-xs whitespace-nowrap">
+                <button class="px-3 py-1 bg-white bg-opacity-10 rounded-full text-white text-xs whitespace-nowrap text-center">
                     断食期间如何锻炼？
                 </button>
-                <button class="px-3 py-1 bg-white bg-opacity-10 rounded-full text-white text-xs whitespace-nowrap">
+                <button class="px-3 py-1 bg-white bg-opacity-10 rounded-full text-white text-xs whitespace-nowrap text-center">
                     我的轻断食计划合适吗？
                 </button>
             </div>
         </div>
     </div>
+    
+    <!-- 手机边框效果 -->
+    <div class="phone-border"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为全屏状态检测提供全局函数
+            window.isFullScreen = function() {
+                return !!(
+                    document.fullscreenElement ||
+                    document.webkitFullscreenElement ||
+                    document.mozFullScreenElement ||
+                    document.msFullscreenElement
+                );
+            };
+        });
+    </script>
 </body>
 </html> 

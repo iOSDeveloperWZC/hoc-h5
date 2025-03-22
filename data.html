@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 全屏按钮脚本 -->
+    <script src="fullscreen-button.js"></script>
+    <!-- 公共样式 - 灵动岛等 -->
+    <link rel="stylesheet" href="common-styles.css">
+    <!-- 公共元素脚本 -->
+    <script src="common-elements.js"></script>
     <style>
         /* 自定义样式 */
         :root {
@@ -40,38 +46,9 @@
             width: 390px;
             height: 844px;
             border-radius: 54px;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        
-        /* iPhone刘海和动态岛样式 */
-        .iphone-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 35px;
-            background-color: #000;
-            border-bottom-left-radius: 18px;
-            border-bottom-right-radius: 18px;
-            z-index: 30;
-        }
-        
-        /* 状态栏调整为透明 */
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 30px 0px 30px;
-            position: relative;
-            z-index: 20;
-            height: 44px;
-            background: transparent;
         }
         
         /* 装饰图形 */
@@ -169,11 +146,14 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 h-screen overflow-hidden">
+<body class="flex justify-center items-center min-h-screen bg-gray-900 overflow-hidden">
     <!-- iPhone 15 Pro 模拟框架 -->
     <div class="iphone-frame bg-black">
-        <!-- 刘海/动态岛 -->
-        <div class="iphone-notch"></div>
+        <!-- 灵动岛 -->
+        <div class="dynamic-island">
+            <div class="camera"></div>
+            <div class="speaker"></div>
+        </div>
         
         <!-- 状态栏 -->
         <div class="status-bar">
@@ -185,7 +165,7 @@
             </div>
         </div>
         
-        <!-- 内容区域 -->
+        <!-- 动态渐变背景 -->
         <div class="bg-gradient-main h-full w-full relative overflow-auto" style="padding-bottom: 80px;">
             <!-- 装饰图形 -->
             <div class="shape-blob w-64 h-64 bg-accent-purple top-0 -left-20"></div>
@@ -208,11 +188,11 @@
                     </div>
                     
                     <!-- 时间范围选择器 -->
-                    <div class="flex mt-4 space-x-2">
-                        <button class="tab-button text-white text-sm">日</button>
-                        <button class="tab-button text-white text-sm">周</button>
-                        <button class="tab-button active text-sm font-medium">月</button>
-                        <button class="tab-button text-white text-sm">年</button>
+                    <div class="flex mt-4 space-x-2 justify-center">
+                        <button class="tab-button text-white text-sm text-center">日</button>
+                        <button class="tab-button text-white text-sm text-center">周</button>
+                        <button class="tab-button active text-sm font-medium text-center">月</button>
+                        <button class="tab-button text-white text-sm text-center">年</button>
                     </div>
                 </div>
                 
@@ -686,5 +666,8 @@
             }
         });
     </script>
+    
+    <!-- 手机边框效果 -->
+    <div class="phone-border"></div>
 </body>
 </html> 

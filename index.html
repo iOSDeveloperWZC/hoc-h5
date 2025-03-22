@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>轻盈 - 首页</title>
-    <script>
-        // 自动跳转到splash页面
-        window.location.href = 'splash.html';
-    </script>
+    <!-- 自动重定向到启动页 -->
+    <meta http-equiv="refresh" content="0; url=splash.html">
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 全屏按钮脚本 -->
+    <script src="fullscreen-button.js"></script>
     <style>
         /* 自定义样式 */
         :root {
@@ -121,6 +121,64 @@
             height: 6px;
             border-radius: 50%;
             background-color: white;
+        }
+        
+        /* iPhone灵动岛 */
+        .dynamic-island {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 125px;
+            height: 34px;
+            background-color: black;
+            border-radius: 20px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 模拟摄像头和扬声器 */
+        .camera {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #222;
+            border-radius: 50%;
+            top: 12px;
+            right: 20px;
+        }
+        
+        .camera::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #444;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+        }
+        
+        .speaker {
+            position: absolute;
+            width: 40px;
+            height: 5px;
+            background-color: #222;
+            border-radius: 3px;
+            top: 14px;
+            left: 30px;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 50px 20px 10px;
+            z-index: 90;
         }
     </style>
 </head>
